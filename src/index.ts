@@ -57,7 +57,7 @@ app.get('/authors/:id', async (c) => {
     const author = await prisma.author.findUnique({ where: { id } });
     if (!author) return c.json({ error: 'Höfundur fannst ekki' }, 404);
     return c.json(author, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });
@@ -71,7 +71,7 @@ app.post('/authors', zValidator('json', authorSchema, (result, c) => {
       data: { name: xss(body.name), email: xss(body.email) },
     });
     return c.json(newAuthor, 201);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Villa við skráningu, gæti verið að netfang sé þegar til' }, 500);
   }
 });
@@ -89,7 +89,7 @@ app.put('/authors/:id', zValidator('json', authorSchema, (result, c) => {
       data: { name: xss(body.name), email: xss(body.email) },
     });
     return c.json(updatedAuthor, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Höfundur fannst ekki' }, 404);
   }
 });
@@ -101,7 +101,7 @@ app.delete('/authors/:id', async (c) => {
   try {
     await prisma.author.delete({ where: { id } });
     return new Response(null, { status: 204 });
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Höfundur fannst ekki' }, 404);
   }
 });
@@ -122,7 +122,7 @@ app.get('/articles', async (c) => {
     ]);
 
     return c.json({ data: articles, paging: { limit, offset, total } }, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });
@@ -138,7 +138,7 @@ app.get('/articles/:slug', async (c) => {
     
     if (!article) return c.json({ error: 'Frétt fannst ekki' }, 404);
     return c.json(article, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });
@@ -160,7 +160,7 @@ app.post('/articles', zValidator('json', articleSchema, (result, c) => {
       },
     });
     return c.json(newArticle, 201);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Villa við skráningu, gæti verið að slug sé þegar til' }, 500);
   }
 });
@@ -185,7 +185,7 @@ app.put('/articles/:id', zValidator('json', articleSchema, (result, c) => {
       },
     });
     return c.json(updatedArticle, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Frétt fannst ekki' }, 404);
   }
 });
@@ -197,7 +197,7 @@ app.delete('/articles/:id', async (c) => {
   try {
     await prisma.article.delete({ where: { id } });
     return new Response(null, { status: 204 });
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Frétt fannst ekki' }, 404);
   }
 });
