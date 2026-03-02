@@ -44,7 +44,7 @@ app.get('/authors', async (c) => {
     ]);
 
     return c.json({ data: authors, paging: { limit, offset, total } }, 200);
-  } catch (error) {
+  } catch {
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });
